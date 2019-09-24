@@ -1,0 +1,1 @@
+ lambda-local -l app.js -e test/createPersonEvent.json -E {\"MONGODB_ATLAS_CLUSTER_URI\":\"mongodb://lambdauser:$PASSWORD@3dc-cluster-makj7.mongodb.net/test?ssl=true\"}

@@ -1,0 +1,55 @@
+{
+    "path": "",
+    "headers": {
+      "Accept": "",
+      "Accept-Encoding": "",
+      "Accept-Language": "",
+      "CloudFront-Forwarded-Proto": "",
+      "CloudFront-Is-Desktop-Viewer": "",
+      "CloudFront-Is-Mobile-Viewer": "",
+      "CloudFront-Is-SmartTV-Viewer": "",
+      "CloudFront-Is-Tablet-Viewer": "",
+      "CloudFront-Viewer-Country": "",
+      "Host": "",
+      "Upgrade-Insecure-Requests": "1",
+      "User-Agent": "",
+      "Via": "",
+      "X-Amz-Cf-Id": "",
+      "X-Forwarded-For": "",
+      "X-Forwarded-Port": "",
+      "X-Forwarded-Proto": ""
+    },
+    "pathParameters": {
+      "proxy": ""
+    },
+    "requestContext": {
+      "accountId": "",
+      "resourceId": "",
+      "stage": "",
+      "requestId": "",
+      "identity": {
+        "cognitoIdentityPoolId": "",
+        "accountId": "",
+        "cognitoIdentityId": "",
+        "caller": "",
+        "apiKey": "",
+        "sourceIp": "",
+        "cognitoAuthenticationType": "",
+        "cognitoAuthenticationProvider": "",
+        "userArn": "",
+        "userAgent": "",
+        "user": ""
+      },
+      "resourcePath": "",
+      "httpMethod": "POST",
+      "apiId": ""
+    },
+    "resource": "",
+    "httpMethod": "POST",
+    "queryStringParameters": {
+      "name": "me"
+    },
+    "stageVariables": {
+      "stageVarName": "stageVarValue"
+    }
+  }
