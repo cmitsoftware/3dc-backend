@@ -243,13 +243,38 @@ function getPerson(db, personId, callback) {
     });
 }
 
-function filterPerson(db, filter, callback) {
-    console.log("Filtering person " + filter);
-    db.collection("persons").find({'or':[
+function filterPerson(db, filterString, callback) {
+    console.log("Filtering person " + filterString);
+    let filter = JSON.parse(filterString);
+    //let filter = eval(filterString);
+    console.log("filter: " + filter);
+    let orFilter = [];
+    if (filter != null) {
+        filter.forEach(function(value, key, map){
+            console.log(value);
+            let orClause = new Object();
+            //let orClauseValue = new Object();
+            orClause[key] = {'$regex': value, '$options': 'i'};
+            orFilter.push(orClause);
+        });
+    }
+    /*
+    db.collection("persons").find(
+        {'$or':[
             {'name': {'$regex': filter, '$options': 'i'}},
             {'surname': {'$regex': filter, '$options': 'i'}}
-        ]}).toArray(function(err, persons) {
-        if (err) throw err;
+        ]}
+    )
+    */
+   console.log(orFIlter);
+    db.collection("persons").find(
+        {'$or': orFilter}
+    )
+    .toArray(function(err, persons) {
+        if (err) {
+			console.error("An error occurred getPerson", err);
+            callback(null, {statusCode:500, body:JSON.stringify(err)});
+		}
         console.log("Persons found: " + persons); 
         callback(null, {statusCode:200, body:JSON.stringify(persons)});
     });
