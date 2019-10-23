@@ -8,6 +8,17 @@ var MongoClient = require('mongodb').MongoClient;
 let atlas_connection_uri;
 let cachedDb = null;
 
+function buildResponse(code, body) {
+    let response = {
+        statusCode:code, 
+        headers: {
+            "Access-Control-Allow-Origin": "*"
+        },
+        body:JSON.stringify(body)
+    }
+    return response;
+}
+
 exports.handler = (event, context, callback) => {
     var uri = process.env['MONGODB_ATLAS_CLUSTER_URI'];
 
@@ -249,7 +260,7 @@ function filterPerson(db, filterString, callback) {
     //let filter = eval(filterString);
     console.log("filter: " + filter);
     let orFilter = [];
-    if (filter != null) {
+    if (filter != null && Array.isArray(filter)) {
         filter.forEach(function(value, key, map){
             console.log(value);
             let orClause = new Object();
@@ -266,18 +277,24 @@ function filterPerson(db, filterString, callback) {
         ]}
     )
     */
-   console.log(orFIlter);
-    db.collection("persons").find(
-        {'$or': orFilter}
-    )
-    .toArray(function(err, persons) {
-        if (err) {
-			console.error("An error occurred getPerson", err);
-            callback(null, {statusCode:500, body:JSON.stringify(err)});
-		}
-        console.log("Persons found: " + persons); 
-        callback(null, {statusCode:200, body:JSON.stringify(persons)});
-    });
+    console.log(orFilter);
+    let query = {};
+    if(orFilter.length > 0) {
+        query = {'$or': orFilter};
+    }
+    let pageNumber = 1;
+    let nPerPage = 10;
+    db.collection("persons").find(query)
+        .skip( pageNumber > 0 ? ( ( pageNumber - 1 ) * nPerPage ) : 0 )
+        .limit( nPerPage )
+        .toArray(function(err, persons) {
+            if (err) {
+                console.error("An error occurred getPerson", err);
+                callback(null, {statusCode:500, body:JSON.stringify(err)});
+            }
+            console.log("Persons found: " + persons); 
+            callback(null, buildResponse(200, persons));
+        });
 }
 
 function deletePerson(db, personId, callback) {
@@ -305,3 +322,4 @@ function updatePerson(db, personId, body, callback) {
         //callback(null, {statusCode:200, body:result});
     });
 }
+
